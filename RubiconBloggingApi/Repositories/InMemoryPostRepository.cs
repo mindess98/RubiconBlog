@@ -7,7 +7,8 @@ namespace RubiconBloggingApi.Repositories
 {
     public class InMemoryPostRepository : IPostRepository
     {
-        static List<Post> Posts = new List<Post>
+        // Getter and setter for unit testing services
+        public static List<Post> Posts { get; set; } = new List<Post>
         {
             new Post
             {

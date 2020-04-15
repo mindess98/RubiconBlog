@@ -3,7 +3,7 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class PostsControllerTests
+    public class PostServiceTests
     {
         [Fact]
         public void Test1()

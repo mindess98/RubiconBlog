@@ -57,10 +57,16 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Posts.sql" />
     <Build Include="Tables\PostsTags.sql" />
+    <Build Include="Stored Procedures\GetPosts.sql" />
+    <Build Include="Stored Procedures\GetPost.sql" />
+    <Build Include="Stored Procedures\DeletePost.sql" />
+    <Build Include="Stored Procedures\UpdatePost.sql" />
+    <Build Include="Stored Procedures\CreatePost.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Tags.sql" />
