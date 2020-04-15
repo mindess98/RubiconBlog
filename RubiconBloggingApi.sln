@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconBloggingApi", "RubiconBloggingApi\RubiconBloggingApi.csproj", "{410A1A20-1C52-47D2-9DA7-7A543196C895}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RubiconDb", "RubiconDb\RubiconDb.sqlproj", "{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{410A1A20-1C52-47D2-9DA7-7A543196C895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{410A1A20-1C52-47D2-9DA7-7A543196C895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{410A1A20-1C52-47D2-9DA7-7A543196C895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{410A1A20-1C52-47D2-9DA7-7A543196C895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6FA6FD64-AE9D-4B7E-AF15-D78D098D0AD1}
+	EndGlobalSection
+EndGlobal
