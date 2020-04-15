@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RubiconBloggingApi.Repositories;
+using RubiconBloggingApi.Services;
 
 namespace RubiconBloggingApi
 {
@@ -19,6 +21,12 @@ namespace RubiconBloggingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IPostRepository, InMemoryPostRepository>();
+            services.AddScoped<ITagRepository, InMemoryTagRepository>();
+
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ITagService, TagService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
