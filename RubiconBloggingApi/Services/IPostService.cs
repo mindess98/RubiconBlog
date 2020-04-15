@@ -1,9 +1,9 @@
 ﻿using RubiconBloggingApi.Models;
 using System.Collections.Generic;
 
-namespace RubiconBloggingApi.Repositories
+namespace RubiconBloggingApi.Services
 {
-    public interface IPostRepository
+    public interface IPostService
     {
         Post GetPost(string slug);
         List<Post> GetPosts();
