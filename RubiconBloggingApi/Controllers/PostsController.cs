@@ -11,11 +11,6 @@ namespace RubiconBloggingApi.Controllers
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         static List<Tag> Tags = new List<Tag> { new Tag { Id = 1, Name = "Lifestyle" },
                                                 new Tag { Id = 2, Name = "Tech" },
                                                 new Tag { Id = 3, Name = "Automotive" },
@@ -57,18 +52,71 @@ namespace RubiconBloggingApi.Controllers
             }
         };
 
-
-        private readonly ILogger<PostsController> _logger;
-
-        public PostsController(ILogger<PostsController> logger)
+        public PostsController()
         {
-            _logger = logger;
         }
 
         [HttpGet]
         public IEnumerable<Post> Get()
         {
             return Posts;
+        }
+
+        [HttpDelete]
+        public bool Delete(string slug)
+        {
+            var postToRemove = Posts.Where(x => x.Slug == slug).SingleOrDefault();
+            if (postToRemove != null) 
+            {
+                Posts.Remove(postToRemove);
+                return true;
+            }
+            return false;
+        }
+
+        [HttpPost]
+        public string Create([FromBody]Post post)
+        {
+            var slug = MakeSlugOutOfTitle(post.Title);
+            post.Slug = slug;
+            Posts.Add(post);
+
+            return slug;
+        }
+
+        [HttpPut]
+        public string Update(string slug, [FromBody]Post post)
+        {
+            var existingPost = Posts.Where(x => x.Slug == slug).SingleOrDefault();
+
+            if(existingPost != null)
+            {
+                var title = post.Title ?? existingPost.Title;
+                var updatedPost = new Post
+                {
+                    Slug = MakeSlugOutOfTitle(title),
+                    Title = title,
+                    Description = post.Description ?? existingPost.Description,
+                    Body = post.Body ?? existingPost.Body,
+                    CreatedAt = existingPost.CreatedAt,
+                    UpdatedAt = DateTime.Now,
+                    Tags = post.Tags
+                };
+
+                var i = Posts.IndexOf(existingPost);
+                Posts[i] = updatedPost;
+
+                return updatedPost.Slug;
+            }
+
+            return "";
+        }
+
+        private string MakeSlugOutOfTitle(string title)
+        {
+            var titleWords = title.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            return titleWords.Aggregate("", (x, y) => x + "-" + y);
         }
     }
 }
