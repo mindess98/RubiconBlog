@@ -9,5 +9,6 @@ namespace RubiconBloggingApi.Repositories
         List<Post> GetPosts();
         bool DeletePost(string slug);
         string UpdatePost(string slug, Post post);
+        string CreatePost(Post post);
     }
 }
