@@ -22,8 +22,10 @@ namespace RubiconBloggingApi
         {
             services.AddControllers();
 
-            services.AddScoped<IPostRepository, InMemoryPostRepository>();
-            services.AddScoped<ITagRepository, InMemoryTagRepository>();
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddScoped<IPostRepository, DapperPostRepository>();
+            services.AddScoped<ITagRepository, DapperTagRepository>();
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITagService, TagService>();

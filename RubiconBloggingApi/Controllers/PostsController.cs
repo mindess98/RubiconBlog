@@ -30,6 +30,13 @@ namespace RubiconBloggingApi.Controllers
             };
         }
 
+        [HttpGet]
+        [Route("/{**slug}")]
+        public Post GetPost([FromRoute]string slug)
+        {
+            return postService.GetPost(slug);
+        }
+
         [HttpDelete]
         public bool Delete(string slug)
         {

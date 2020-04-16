@@ -7,3 +7,7 @@
     [CreatedAt] DATETIME NOT NULL, 
     [UpdatedAt] DATETIME NULL
 )
+
+GO
+
+CREATE INDEX [IX_Posts_Slug] ON [dbo].[Posts] ([Slug])

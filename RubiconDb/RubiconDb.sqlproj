@@ -58,6 +58,7 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Stored Procedures" />
+    <Folder Include="PostDeployScrits" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Posts.sql" />
@@ -73,5 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="RubiconDb.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RubiconDb.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeployScrits\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
