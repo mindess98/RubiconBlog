@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using RubiconBloggingApi.Models;
 using RubiconBloggingApi.ResponseObjects;
 using RubiconBloggingApi.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace RubiconBloggingApi.Controllers
@@ -20,9 +17,9 @@ namespace RubiconBloggingApi.Controllers
         }
 
         [HttpGet]
-        public GetPostsResponse Get()
+        public GetPostsResponse Get([FromQuery] string tag)
         {
-            var posts = postService.GetPosts();
+            var posts = postService.GetPosts(tag);
             return new GetPostsResponse
             {
                 BlogPosts = posts,
@@ -31,28 +28,34 @@ namespace RubiconBloggingApi.Controllers
         }
 
         [HttpGet]
-        [Route("/{**slug}")]
-        public Post GetPost([FromRoute]string slug)
+        [Route("{slug}")]
+        public Post GetPost(string slug)
         {
             return postService.GetPost(slug);
         }
 
         [HttpDelete]
+        [Route("{slug}")]
         public bool Delete(string slug)
         {
             return postService.DeletePost(slug);
         }
 
         [HttpPost]
-        public string Create([FromBody]Post post)
+        public Post Create([FromBody]Post post)
         {
-            return postService.CreatePost(post);
+            var slug = postService.CreatePost(post);
+
+            return postService.GetPost(slug);
         }
 
         [HttpPut]
-        public string Update(string slug, [FromBody]Post post)
+        [Route("{slug}")]
+        public Post Update(string slug, [FromBody]Post post)
         {
-            return postService.UpdatePost(slug, post);
+            var newSlug = postService.UpdatePost(slug, post);
+
+            return postService.GetPost(newSlug);
         }
     }
 }

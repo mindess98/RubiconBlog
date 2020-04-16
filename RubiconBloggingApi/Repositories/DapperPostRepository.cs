@@ -21,16 +21,37 @@ namespace RubiconBloggingApi.Repositories
         {
             using (IDbConnection connection = new SqlConnection(GetDefaultConnectionString()))
             {
-                string sql = @"INSERT INTO Posts (Slug, Title, [Description], Body) 
-                               VALUES (@Slug, @Title, @Description, @Body);
-                               SELECT @@ROWCOUNT;";
+                string insertPost = @"INSERT INTO Posts (Slug, Title, [Description], Body) 
+                                      VALUES (@Slug, @Title, @Description, @Body);
+                                      SELECT SCOPE_IDENTITY();";
                 var parameters = new { Slug = post.Slug, Title = post.Title, Description = post.Description, Body = post.Body };
 
-                var rows = connection.Query<int>(sql, parameters);
+                var id = connection.Query<int>(insertPost, parameters).SingleOrDefault();
 
-                if(rows.SingleOrDefault() == 1)
-                    return post.Slug;
-                return "";
+                string insertTag = @"INSERT INTO Tags (Name) VALUES (@Name); SELECT SCOPE_IDENTITY();";
+                var ids = new List<int>();
+                foreach (var tag in post?.TagList)
+                {
+                    var paras = new { Name = tag };
+
+                    ids.Add(connection.Query<int>(insertTag, paras).SingleOrDefault());
+                }
+
+                string insertPostTag = @"INSERT INTO PostsTags (PostId, TagId) VALUES (@PostId, @TagId); SELECT @@ROWCOUNT;";
+
+                int insertedPostTags = 0;
+
+                foreach(var tagId in ids)
+                {
+                    if (tagId < 1)
+                        continue;
+
+                    var pars = new { PostId = id, TagId = tagId };
+
+                    insertedPostTags += connection.Query<int>(insertPostTag, pars).SingleOrDefault();
+                }
+
+                 return post.Slug;
             }
         }
 
@@ -47,41 +68,95 @@ namespace RubiconBloggingApi.Repositories
             }
         }
 
-        public Post GetPost(string slug)
+        public FullPost GetPost(string slug)
         {
             using (IDbConnection connection = new SqlConnection(GetDefaultConnectionString()))
             {
-                string sql = @"SELECT * FROM Posts WHERE Slug = @Slug";
+                string sql = @"SELECT * FROM Posts p
+                               LEFT JOIN PostsTags pt ON pt.PostId = p.Id
+                               LEFT JOIN Tags t ON pt.TagId = t.Id
+                               WHERE p.Slug = @Slug";
                 var parameters = new { Slug = slug };
 
-                var post = connection.Query<Post>(sql, parameters);
+                var tagsDict = new Dictionary<int, FullPost>();
 
-                return post.SingleOrDefault();
+                var post = connection.Query<FullPost, Tag, FullPost>(sql,
+                    (post, tag) =>
+                    {
+                        FullPost postEntry;
+
+                        if (!tagsDict.TryGetValue(post.Id, out postEntry))
+                        {
+                            postEntry = post;
+                            postEntry.TagList = new List<string>();
+                            tagsDict.Add(postEntry.Id, postEntry);
+                        }
+
+                        if (!(tag is null))
+                        {
+                            postEntry.TagList.Add(tag.Name);
+                        }
+
+                        return postEntry;
+                    }, parameters);
+
+                return tagsDict.SingleOrDefault().Value;
             }
         }
 
-        public List<Post> GetPosts()
+        public List<FullPost> GetPosts(string tag)
         {
             using (IDbConnection connection = new SqlConnection(GetDefaultConnectionString()))
             {
-                string sql = @"SELECT p.*, t.*
-	                           FROM Posts p
-	                           LEFT JOIN PostsTags pt ON p.Slug = pt.PostSlug
-	                           LEFT JOIN Tags t ON pt.TagId = t.Id";
+                string sql;
+                
+                if(!string.IsNullOrEmpty(tag))
+                {
+                    sql = @"SELECT pos.*, tg.*
+	                           FROM (SELECT p.Id
+	                                 FROM Posts p
+	                                 LEFT JOIN PostsTags pt ON p.Id = pt.PostId
+	                                 LEFT JOIN Tags t ON pt.TagId = t.Id
+                                     WHERE t.Name = @Tag) ps
+                               JOIN Posts pos ON pos.Id = ps.Id
+	                           LEFT JOIN PostsTags pot ON pos.Id = pot.PostId
+	                           LEFT JOIN Tags tg ON pot.TagId = tg.Id
+                               ORDER BY pos.CreatedAt DESC;";
+                } 
+                else
+                {
+                    sql = @"SELECT pos.*, tg.*
+	                        FROM Posts pos
+	                        LEFT JOIN PostsTags pt ON pos.Id = pt.PostId
+	                        LEFT JOIN Tags tg ON pt.TagId = tg.Id
+                            ORDER BY pos.CreatedAt DESC;";
+                }
+                
+                
+                var parameters = new { Tag = tag };
 
-                var posts = connection.Query<Post, Tag, Post>(sql, 
+                var tagsDict = new Dictionary<int, FullPost>();
+
+                var posts = connection.Query<FullPost, Tag, FullPost>(sql,
                     (post, tag) => 
                     {
-                        if(!(tag is null))
+                        FullPost postEntry;
+
+                        if(!tagsDict.TryGetValue(post.Id, out postEntry))
                         {
-                            if(post.TagList is null)
-                                post.TagList = new List<string>();
-                            post.TagList.Add(tag.Name);
+                            postEntry = post;
+                            postEntry.TagList = new List<string>();
+                            tagsDict.Add(postEntry.Id, postEntry);
                         }
 
-                        return post;
-                    }, splitOn: "Slug").Distinct().ToList();
+                        if(!(tag is null))
+                        {
+                            postEntry.TagList.Add(tag.Name);
+                        }
 
+                        return postEntry;
+                    }, parameters).Distinct().ToList();
+                
                 return posts;
             }
         }
@@ -96,13 +171,13 @@ namespace RubiconBloggingApi.Repositories
                                     Title = @Title,
                                     [Description] = @Description,
                                     Body = @Body,
-                                    UpdatedAt = GETDATE();
+                                    UpdatedAt = GETDATE()
                                WHERE
-                                    Slug = @OldSlug
+                                    Slug = @OldSlug;
                                SELECT @@ROWCOUNT;";
                 var parameters = new { OldSlug = slug, Slug = post.Slug, Title = post.Title, Description = post.Description, Body = post.Body };
 
-                var rows = connection.Query<int>(sql);
+                var rows = connection.Query<int>(sql, parameters);
 
                 if (rows.SingleOrDefault() == 1)
                     return post.Slug;

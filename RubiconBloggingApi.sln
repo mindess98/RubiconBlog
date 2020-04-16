@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconBloggingApi", "RubiconBloggingApi\RubiconBloggingApi.csproj", "{410A1A20-1C52-47D2-9DA7-7A543196C895}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RubiconBloggingApi", "RubiconBloggingApi\RubiconBloggingApi.csproj", "{410A1A20-1C52-47D2-9DA7-7A543196C895}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RubiconDb", "RubiconDb\RubiconDb.sqlproj", "{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{D1549F55-9B6A-4E0F-8F16-8554CFC4F4FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01D99D4D-D9AE-4142-BEA6-53FBDB8465F2}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{D1549F55-9B6A-4E0F-8F16-8554CFC4F4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1549F55-9B6A-4E0F-8F16-8554CFC4F4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1549F55-9B6A-4E0F-8F16-8554CFC4F4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1549F55-9B6A-4E0F-8F16-8554CFC4F4FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

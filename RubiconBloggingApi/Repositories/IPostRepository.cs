@@ -5,8 +5,8 @@ namespace RubiconBloggingApi.Repositories
 {
     public interface IPostRepository
     {
-        Post GetPost(string slug);
-        List<Post> GetPosts();
+        FullPost GetPost(string slug);
+        List<FullPost> GetPosts(string tag);
         bool DeletePost(string slug);
         string UpdatePost(string slug, Post post);
         string CreatePost(Post post);

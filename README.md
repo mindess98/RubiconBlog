@@ -7,8 +7,10 @@ SQL Database publish instructions:
 - Select LocalDb (MSSQLLocalDB)
 - In the bottom right, go to Advanced... -> Verify that Integrated Security is set to True
 - Give the database a name, say RubiconDb
-- Copy the connection string which should now be displayed in the Target database connection string field
+- Copy the connection string which should now be displayed in the Target database connection string field, Add to the connection string Database={YourDatabaseName};
 - Click Publish
 
 
-In order to run the application, copy the connection string into the appsettings.Development.json and appsettings.json "DefaultConnection" field
+In order to run the application, copy the connection string into the appsettings.Development.json and appsettings.json "DefaultConnection" field.
+
+Run the application.

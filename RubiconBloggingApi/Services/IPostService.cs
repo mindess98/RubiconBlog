@@ -6,7 +6,7 @@ namespace RubiconBloggingApi.Services
     public interface IPostService
     {
         Post GetPost(string slug);
-        List<Post> GetPosts();
+        List<Post> GetPosts(string tag);
         bool DeletePost(string slug);
         string UpdatePost(string slug, Post post);
         string CreatePost(Post post);

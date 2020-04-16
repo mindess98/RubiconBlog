@@ -21,4 +21,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PostSlug" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="a3318cd3-036c-42c5-94fe-b49a127da997" ChangeDateTime="04/16/2020 10:29:41">
+    <Property Name="ElementName" Value="[dbo].[PostsTags].[PostSlug]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PostsTags]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PostId" />
+  </Operation>
 </Operations>
